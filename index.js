@@ -14,21 +14,19 @@ let users = [
 server.use(express.json()); 
 
 //endpoints
-server.get('/', (req, res) => {
-  res.json({ api: "running..."})
-})
-
-server.get('/api/users', (req, res) => {
-  res.json(users)
-})
-
-server.get('./api/users/:id', (req, res) => {
-  const id = req.params.id;
-
-  const user = users.find((e) => e.id == id);
-
-  user ? res.status(201).json(user) : res.status(500).json({ errorMessage: "The users information could not be retrieved."})
+server.post('/api/users', (req, res) => {
+  const user = req.body;
+  if(user.name === '' || user.bio === '') {
+    res.status(400).json({ errorMessage: "The users information could not be retrieved." })
+  } else {
+    users.push(user);
+    res.status(201).json(user); 
+  }
+  if (!user) {
+    res.status(500).json({ errorMessage: "There was an error while saving the user to the database" });
+  }
 });
+
 
 
 const port = 6000;
