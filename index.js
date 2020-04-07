@@ -7,13 +7,13 @@ server.use(express.json());
 
 let users = [
   {
-    name: "test",
-    bio: "test bio",
+    name: "Kevin",
+    bio: "My bio",
     id: 0,
   },
 ];
 
-// endpoints
+// add user
 server.post("/api/users", (req, res) => {
   const user = req.body;
   if (user.name === "" || user.bio === "") {
@@ -31,6 +31,7 @@ server.post("/api/users", (req, res) => {
   }
 });
 
+//get users
 server.get("/api/users", (req, res) => {
   users
     ? res.status(200).json(users)
@@ -39,6 +40,7 @@ server.get("/api/users", (req, res) => {
       });
 });
 
+//get users by id
 server.get("/api/users/:id", (req, res) => {
   const id = req.params.id;
 
@@ -51,11 +53,12 @@ server.get("/api/users/:id", (req, res) => {
         .json({ message: "The user with the specified ID does not exist" });
 });
 
+//delete users by id
 server.delete("/api/users/:id", (req, res) => {
-  const id = Number(req.params.id);
+  const id = req.params.id;
 
   const user = users.find((e) => e.id == id);
-  users = users.filter((e) => Number(e.id) !== id);
+  users = users.filter((e) => e.id !== id);
 
   user
     ? res.status(200).json(users)
@@ -64,7 +67,7 @@ server.delete("/api/users/:id", (req, res) => {
         .json({ message: "The user with the specified ID does not exist." });
 });
 
-const port = 5001;
-server.listen(port, () =>
-  console.log(`\n\n*** api running on port ${port} *** \n\n`)
+const PORT = 5001;
+server.listen(PORT, () => 
+    console.log(`\n** API running on http://localhost:${PORT} **\n`)
 );
